@@ -24,7 +24,8 @@ col1, col2 = st.columns(2)
 with col1:
     batting_team = st.selectbox('Select the batting team', teams)
 with col2:
-    bowling_team = st.selectbox('Select the bowling team', teams)
+    bowling_options = [team for team in teams if team != batting_team]
+    bowling_team = st.selectbox('Select the bowling team', bowling_options)
 
 selected_venue = st.selectbox('Select venue', venues)
 

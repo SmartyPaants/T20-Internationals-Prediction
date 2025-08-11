@@ -86,5 +86,5 @@ def process_all_matches(input_folder, output_csv):
 
 if __name__ == "__main__":
     input_folder = r"t20s_json"
-    output_csv = r"t20i_inmatch_features.csv"
+    output_csv = r"t20_data.csv"
     process_all_matches(input_folder, output_csv)
