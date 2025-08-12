@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import pickle
 
 # Load dataset for dropdown options
@@ -47,9 +48,33 @@ col6, col7, col8 = st.columns(3)
 with col6:
     runs_so_far = st.number_input('Runs scored so far', min_value=0)
 with col7:
-    overs = st.number_input('Overs completed', min_value=0.0, step=0.167, format="%.3f")
+    overs = st.number_input('Overs completed', min_value=0.0, step=0.167, format="%.3f", max_value=20.0)
 with col8:
     wickets_so_far = st.number_input('Wickets lost so far', min_value=0, max_value=10)
+
+# Phase Feature Collection
+powerplay_runs = powerplay_wickets = mid_overs_runs = mid_overs_wickets = death_overs_runs = death_overs_wickets = np.nan
+
+if overs >= 6:
+    col9, col10 = st.columns(2)
+    with col9:
+        powerplay_runs = st.number_input('Powerplay Runs', min_value=0)
+    with col10:
+        powerplay_wickets = st.number_input('Powerplay Wickets', min_value=0)
+
+if (overs > 6 and overs <=15):
+    col11, col12 = st.columns(2)
+    with col11:
+        mid_overs_runs = st.number_input('Middle Overs Runs', min_value=0)
+    with col12:
+        mid_overs_wickets = st.number_input('Middle Overs Wickets', min_value=0)
+
+if overs >= 16:
+    col13, col14 = st.columns(2)
+    with col13:
+        death_overs_runs = st.number_input('Death Overs Runs', min_value=0)
+    with col14:
+        death_overs_wickets = st.number_input('Death Overs Wickets', min_value=0)
 
 if st.button('Predict Probability'):
     balls_faced = int(overs * 6)
@@ -71,8 +96,17 @@ if st.button('Predict Probability'):
         'balls_faced': [balls_faced],
         'run_rate': [run_rate],
         'target_runs': [target_runs],
-        'required_run_rate': [required_run_rate]
-    }
+        'required_run_rate': [required_run_rate],
+        'pp_runs': [powerplay_runs],
+        'pp_wickets': [powerplay_wickets],
+        'mid_runs': [mid_overs_runs],
+        'mid_wickets': [mid_overs_wickets],
+        'death_runs': [death_overs_runs],
+        'death_wickets': [death_overs_wickets],
+        'pp_runs_known': [int(not pd.isna(powerplay_runs))],
+        'mid_runs_known': [int(not pd.isna(mid_overs_runs))],
+        'death_runs_known': [int(not pd.isna(death_overs_runs))]
+}
 
     input_df = pd.DataFrame(input_dict)
 
