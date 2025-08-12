@@ -62,7 +62,6 @@ if overs >= 6:
     with col10:
         powerplay_wickets = st.number_input('Powerplay Wickets', min_value=0)
 
-if (overs > 6 and overs <=15):
     col11, col12 = st.columns(2)
     with col11:
         mid_overs_runs = st.number_input('Middle Overs Runs', min_value=0)
